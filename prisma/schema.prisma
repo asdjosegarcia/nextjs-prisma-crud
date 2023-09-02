@@ -1,0 +1,18 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"//esto dice que vamos a estar creando codigo para javascript
+}
+
+datasource db { 
+  provider = "sqlite" //base de datos a la que nos vamos a estar comunicando 
+  url      = env("DATABASE_URL")//direccion de la base de datos (haora hace referencia a lo que hay en .env)
+}
+
+model Task{//lugar donde vamos a guardar los datos en nuestra base de datos(no me queda claro)
+  id Int @id @default(autoincrement()) // Int el id es un entero, @id es un identificador unico, (autoincrement()) y se va a ir incrementando
+  title  String //el titulo va a ser un string
+  description String? //tipo string, ? por que es opcional
+  createdAt DateTime @default(now()) //de tipo fecha, y por defecto va a ser la fecha en la que se ha guardado
+}
