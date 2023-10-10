@@ -12,9 +12,9 @@ const NewPage = ({ params }) => {//recimos el parametro de la url ej el ID
     if (params.id) { //si existe el params.id extremos los datos y los colocamos en el input
       fetch(`/api/tasks/${params.id}`)//realizamos una peticion get a parametro de la url.id
         .then(res => res.json())//tranformamos la respuesta a json y almacenamos en data
-        .then(data => { 
+        .then(data => {
           setTitle(data.title), // extraemos titulo y descripcion de  la tarea para almacenarlo en un useState para establecerlo como valor por defecto de los inputs
-          setDescription(data.description) 
+            setDescription(data.description)
           // console.log(description)
         })
     }
@@ -24,14 +24,14 @@ const NewPage = ({ params }) => {//recimos el parametro de la url ej el ID
     e.preventDefault()//evitamos la accion por defecto, que seria recargar la pagina, e tiene los datos del input
     // const title=e.target.title.value//valor del titulo que extraemos cuando le damos a subir
     if (params.id) {//si la tarea existe hacemos una peticion put para reemplazar los datos
-      const res=await fetch(`/api/tasks/${params.id}`,{
-        method:'PUT',
-        body: JSON.stringify({title,description}),
-        headers:{
+      const res = await fetch(`/api/tasks/${params.id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, description }),
+        headers: {
           "Content-Type": "application/json",//json
         }
       })
-      const data =await res.json();
+      const data = await res.json();
       console.log(data)
     } else {//si la tarea no existe, la creamos
       const res = await fetch("/api/tasks", {
@@ -68,7 +68,29 @@ const NewPage = ({ params }) => {//recimos el parametro de la url ej el ID
           onChange={(e) => setDescription(e.target.value)}//establecemos el valor del la descripcion
           defaultValue={description}//establecemos el valor inicial como description
         ></textarea>
-        <button className="bg-blue-500 hover:bg-blue-700 text-white rounded py-2 px-4">Crear</button>{/* rounded border-radius */}
+        <div className='flex justify-between'>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white rounded py-2 px-4 font-bold">Crear</button>{/* rounded border-radius */}
+          {
+            params.id && (
+              <button className="bg-red-500 hover:bg-red-700 text-white rounded py-2 px-4 font-bold" 
+              type="button" /* type button para indicar que este boton solo va a subir el formulario */
+              onClick={ //sei se hace click realizamos una peticion a la api para borrar los datos
+                async()=>{ 
+                const res=await fetch(`/api/tasks/${params.id}`,{
+                method: "DELETE"
+              })
+              const data=await res.json()
+              console.log(data)
+              router.refresh()//refresca toda la pag para que veamos los cambios
+              router.push('/')//nos manda al home
+            }}
+              > {/* con type button indicamos que estara dentro del forumulario pero  no va a aenviar el formulario */}
+                Delete
+              </button>
+            )
+          }
+        </div>
+
       </form>
     </div>
   )
