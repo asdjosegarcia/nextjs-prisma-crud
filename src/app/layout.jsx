@@ -1,5 +1,6 @@
+import Navbar from '@/components/Navbar'
 import './globals.css'
-import { Inter } from 'next/font/google'
+import { Inter } from 'next/font/google' //importamos la fuente Inter de google
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -11,7 +12,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Navbar/> {/* importamos la nava bar, y como estamos en el componente layout de app esto se va a mostrar en toda las sub secciones de app */}
+        {children}
+      </body>
     </html>
   )
 }
